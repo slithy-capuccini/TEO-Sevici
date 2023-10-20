@@ -1,7 +1,11 @@
 from bikes import *
 
 def main():
-    station=read_stations("./data/estaciones.csv")
-    print(station)
+    stations=read_stations("./data/estaciones.csv")
+    print(f"First three stations: {stations[0:3]}")
+    print(free_bikes_stations(stations, 22))
+    print(f"Estas son las estaciones con más de las bicis indicadas")
+    print(near_stations(stations, Coordinates(37.357659,-5.9863)))  
 if __name__ =="__main__":
+
     main()
