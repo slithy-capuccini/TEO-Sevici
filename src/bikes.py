@@ -34,3 +34,9 @@ def near_stations(stations,coord,k=5):
     for i in range(k):
         lista_out.append([stations[lista_distancias[i][1]].name, stations[lista_distancias[i][1]].free_bikes, lista_distancias[i][0]])
     return lista_out
+
+def avarage_coord(stations):
+    #devuelve una cordenada que es la media de las longitudes y otra de las latitudes
+    avr_latitudes=sum([i.location.latitude for i in stations])/len(stations)
+    avr_longitudes=sum([i.location.longitude for i in stations])/len(stations)
+    return avr_latitudes, avr_longitudes

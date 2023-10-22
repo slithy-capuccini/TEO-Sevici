@@ -6,6 +6,7 @@ def main():
     print(free_bikes_stations(stations, 22))
     print(f"Estas son las estaciones con más de las bicis indicadas")
     print(near_stations(stations, Coordinates(37.357659,-5.9863)))  
+    print(avarage_coord(stations))
 if __name__ =="__main__":
 
     main()
