@@ -1,6 +1,9 @@
 import csv
 from collections import namedtuple
 import math
+import folium
+import webbrowser
+import os
 Coordinates=namedtuple("Coordinates","latitude, longitude")
 Station=namedtuple("Station","name, slots, empty_slots, free_bikes, location")
 
@@ -34,9 +37,44 @@ def near_stations(stations,coord,k=5):
     for i in range(k):
         lista_out.append([stations[lista_distancias[i][1]].name, stations[lista_distancias[i][1]].free_bikes, lista_distancias[i][0]])
     return lista_out
+def create_map(latitud, longitud, zoom=9):
+    '''
+    Función que crea un mapa folium que está centrado en la latitud y longitud
+    dados como parámetro y mostrado con el nivel de zoom dado.
+    ENTRADA:
+        :param latitud: latitud del centro del mapa en pantalla
+        :type latitud:float
+        :param longitud: longitud del centro del mapa  en pantalla
+        :type longitud: float
+        :param zoom: nivel del zoom con el que se muestra el mapa
+        :type zoom: int
+    SALIDA:
+        :return: objeto mapa creado
+        :rtype: folium.Map
+    '''
+    mapa = folium.Map(location=[latitud, longitud], 
+                      zoom_start=zoom)
+    return mapa    
+def save_map(mapa, ruta_fichero):
+    '''Guard un mapa como archivo html
 
+    :param mapa: Mapa a guardar
+    :type mapa: folium.Map
+    :param ruta_fichero: Nombre y ruta del fichero
+    :type ruta_fichero: str
+    '''
+    mapa.save(ruta_fichero)
+    # Abre el fichero creado en un navegador web
+    webbrowser.open("file://" + os.path.realpath(ruta_fichero))
 def avarage_coord(stations):
     #devuelve una cordenada que es la media de las longitudes y otra de las latitudes
     avr_latitudes=sum([i.location.latitude for i in stations])/len(stations)
     avr_longitudes=sum([i.location.longitude for i in stations])/len(stations)
     return avr_latitudes, avr_longitudes
+
+def create_map_stations(stations, funcion_color):
+    centro_mapa=avarage_coord(stations)
+    mapa=create_map(centro_mapa.latitude,centro_mapa.longitude,13)
+    for estacion in stations:
+        etiqueta=estacion.nombre
+        color=funcion_color(estacion)
